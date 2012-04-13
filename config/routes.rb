@@ -1,4 +1,12 @@
 CrsApi::Application.routes.draw do
+  api_version(:module => "V1", :header=>"Accept", :value=>"application/vnd.cru.com-v1", :default => true) do
+    resources :conferences do
+      member do
+        get :registrants
+      end
+    end
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
