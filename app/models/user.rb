@@ -1,4 +1,4 @@
 class User < ActiveRecord::Base
-  set_table_name 'simplesecuritymanager_user'
-  set_primary_key 'userID'
+  self.table_name = 'simplesecuritymanager_user'
+  self.primary_key = 'userID'
 end
