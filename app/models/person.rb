@@ -4,6 +4,7 @@ class Person < ActiveRecord::Base
 
   has_many :addresses, foreign_key: 'fk_personID'
   has_one :current_address, class_name: 'Address', foreign_key: 'fk_personID', conditions: {'ministry_newaddress.addressType' => 'current'}
+  belongs_to :user, foreign_key: 'fk_ssmUserId'
 
   def first_name
     firstName
