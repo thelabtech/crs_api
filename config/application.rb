@@ -61,5 +61,7 @@ module CrsApi
     config.middleware.delete ::ActionDispatch::Cookies
     config.middleware.delete ::ActionDispatch::Session::CookieStore
     config.middleware.delete ::ActionDispatch::Flash
+
+    config.from_file 'settings.yml'
   end
 end

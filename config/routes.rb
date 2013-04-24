@@ -1,5 +1,6 @@
 CrsApi::Application.routes.draw do
-  api_version(:module => "V1", :header=>"Accept", :value=>"application/vnd.cru.com-v1", :default => true) do
+
+  api_version(module: "V1", header: {name: "Accept", value: "application/vnd.cru.com-v1"}) do
     resources :conferences do
       member do
         get :registrants

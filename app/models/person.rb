@@ -1,9 +1,11 @@
 class Person < ActiveRecord::Base
-  set_table_name 'ministry_person'
-  set_primary_key 'personID'
+  self.table_name = 'ministry_person'
+  self.primary_key = 'personID'
 
   has_many :addresses, foreign_key: 'fk_personID'
   has_one :current_address, class_name: 'Address', foreign_key: 'fk_personID', conditions: {'ministry_newaddress.addressType' => 'current'}
+  has_one :crs2_profile, foreign_key: 'ministry_person_id'
+  belongs_to :user, foreign_key: 'fk_ssmUserId'
 
   def first_name
     firstName

@@ -1,0 +1,6 @@
+defaults: &defaults
+  linker_server_id: 'foo'
+  linker_server_secret: 'bar'
+
+development:
+  <<: *defaults
