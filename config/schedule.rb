@@ -4,6 +4,7 @@ job_type :runner,    "cd :path && RAILS_ENV=:environment /usr/local/bin/bundle e
 
 every 1.day do
   rake 'siebel:link'
+  rake 'relay:emails'
 end
 
 # Use this file to easily define all of your cron jobs.
