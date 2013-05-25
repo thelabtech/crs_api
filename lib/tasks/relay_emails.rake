@@ -1,3 +1,4 @@
+CRU_DOMAINS = %w[cru.org agapeitalia.eu agapeitalia.org aiaretreatcenter.com aiasportscomplex.com arc.gt arclight.org arrowheadconferences.org arrowheadsprings.org athletesinaction.org beyondtheultimate.org bridgesinternational.com brokenphonebooth.com campuscrusadeforchrist.com ccci.org ce-un.org destinomovement.com epicmovement.com facultycommons.org gapps.cru.org gcfccc.org giftandestate.org gocampus.org historyshandful.org inspirationalfilms.com ipriority.com isponline.org isptrips.org jesusfactorfiction.com jesusfilm.org jesusfilmmedia.org jesusfilmmissiontrips.org jesusforchildren.org jesusvideo.org jfministrypartners.org keynote.org magdalenatoday.com militaryministry.org milmin.com milmin.org mission865.org mpdx.org mylastdaymovie.com priorityassociates.org promail.ru reachinginternationals.com schindlercenter.com sharepoint.ccci.org studentventure.com table71.org uscm.org vonettebright.org zcmanagement.com womenforjesus.org cru.org.test-google-a.com]
 namespace :relay do
   task emails: :environment do
     staff = MinistryStaff.find_by_sql("select id, accountNo, firstName, preferredName, lastName, ministry, `primaryEmpLocCity`, `primaryEmpLocCountry`, `primaryEmpLocState`, deptId, jobTitle, deptName, statusDescr, relay_email from ministry_staff where `removedFromPeopleSoft` = 'N' and updated_at > '#{2.days.ago.to_s(:db)}'")
@@ -8,7 +9,7 @@ namespace :relay do
       link = IdentityLinker::Linker.find_linked_identity('emplid', s.accountNo, 'username')
       if link
         username = link[:identity][:id_value]
-        if username && username != s.relay_email
+        if username && username != s.relay_email && CRU_DOMAINS.include?(username.split('@').last)
           # update mailchimp
           vars = { :EMAIL => s.relay_email, :FNAME => s.first_or_preferred,
                    :LNAME => s.lastName, MMERGE7: s.ministry, MMERGE9: s.deptId, MMERGE10: s.deptName,
@@ -31,5 +32,18 @@ namespace :relay do
     gb.list_batch_subscribe(id: Rails.configuration.mailchimp_list, batch: batch, update_existing: true, double_optin: false,
                             send_welcome: false, replace_interests: false)
   end
+
+  #task remove: :environment do
+    #staff = MinistryStaff.find_by_sql("select id, accountNo, firstName, preferredName, lastName, ministry, `primaryEmpLocCity`, `primaryEmpLocCountry`, `primaryEmpLocState`, deptId, jobTitle, deptName, statusDescr, relay_email from ministry_staff where `removedFromPeopleSoft` = 'N' and relay_email is not null")
+    #Gibbon.timeout = 6000
+    #gb = Gibbon.new(Rails.configuration.mailchimp_key)
+    #emails = []
+    #staff.each do |s|
+      #unless CRU_DOMAINS.include?(s.relay_email.split('@').last)
+        #emails << s.relay_email
+      #end
+    #end
+    #gb.list_batch_unsubscribe(id: Rails.configuration.mailchimp_list, emails: emails, delete_member: true, send_goodbye: false, send_notify: false)
+  #end
 end
 
