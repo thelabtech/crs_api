@@ -32,18 +32,5 @@ namespace :relay do
     gb.list_batch_subscribe(id: Rails.configuration.mailchimp_list, batch: batch, update_existing: true, double_optin: false,
                             send_welcome: false, replace_interests: false)
   end
-
-  #task remove: :environment do
-    #staff = MinistryStaff.find_by_sql("select id, accountNo, firstName, preferredName, lastName, ministry, `primaryEmpLocCity`, `primaryEmpLocCountry`, `primaryEmpLocState`, deptId, jobTitle, deptName, statusDescr, relay_email from ministry_staff where `removedFromPeopleSoft` = 'N' and relay_email is not null")
-    #Gibbon.timeout = 6000
-    #gb = Gibbon.new(Rails.configuration.mailchimp_key)
-    #emails = []
-    #staff.each do |s|
-      #unless CRU_DOMAINS.include?(s.relay_email.split('@').last)
-        #emails << s.relay_email
-      #end
-    #end
-    #gb.list_batch_unsubscribe(id: Rails.configuration.mailchimp_list, emails: emails, delete_member: true, send_goodbye: false, send_notify: false)
-  #end
 end
 
